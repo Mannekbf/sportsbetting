@@ -10,6 +10,8 @@ Created on Fri Dec 10 17:08:03 2021
 import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import time
 
 
@@ -48,48 +50,44 @@ xpath = '//*[@id="didomi-notice-agree-button"]'
 accept = driver.find_element(By.XPATH,xpath)
 accept.click()
 
-
+wait = WebDriverWait(driver, 10)
 
 #%% Scrape bookmaker's website
 
-#sport_title = driver.find_elements_by_class_name("filters__content")
-sport_title = driver.find_elements(By.CLASS_NAME, "filters__content")
-print(sport_title)
+time.sleep(5)
 
-
-for sport in sport_title:
-    print(sport)
-
-# driver.findElement(By.id("query")               
-# sport_list = [x.replace('\n', '') for x in sport_title]
-# football_title = driver.find_elements_by_class_name('Soccer active')
-# tennis_title = driver.find_elements_by_class_name('Tennis active')
-# basketball_title = driver.find_elements_by_class_name('Basketball active')
-# icehockey_title = driver.find_elements_by_class_name('Icehockey active')
-
-
-
-# for x in sport_title:
-#     sport_list = x.text.split('\n')
-#     print(sport_list)
-        
-#     for sport in sport_list:
-#         if sport == 'Tennis':
-#             print('yes')
-#             parent = sport.find_elements_by_class_name('bet_event_main_list')
-#             granny = sport.find_elements_by_class_name('bet_event_row')
-#             print(granny.text)
-#             grandparent = parent.find_elements_by_class_name('data-container 532a3c3c-0410-1a94-c747-fc3bc383a773')
+sport_list = driver.find_elements(By.CSS_SELECTOR,'.filters__content li')
     
-#             single_row_events = grandparent.find_elements_by_class_name('Bet-event-list')
+for x in range(0,len(sport_list)):
+
+    if sport_list[x].text == 'Tennis':
+        print('yes')
+        print(sport_list[x].text)
+            
+        sport_list[x].click()
+            
+        # driver.set_window_size(1750,800)
+        
+        # click on button 'load all pre-matches'
+        driver.execute_script("arguments[0].click();", wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id='pageContent']/div/section/div/div/div/div[1]/div/div[2]/div/div[1]/section/div/div/div/div[2]/div/div/div[3]/a"))))
+        
+        break
+        
+        # parent = sport.find_element(By.XPATH,'./..')
+        # grandparent = parent.find_element(By.XPATH,'./..')
+        # # parent = sport.find_elements_by_class_name('bet_event_main_list')
+        # # grandparent = parent.find_elements_by_class_name('data-container 532a3c3c-0410-1a94-c747-fc3bc383a773')
+        # print(parent.text)
+        # print(grandparent.text)
+        
+        # single_row_events = grandparent.find_elements_by_class_name('Bet-event-list')
             
     
-#             for match in single_row_events:
-#                 odds_event = match.find_elements_by_class_name('bet-outcome-list cols-3')
-#                 odds_events.append(odds_event)
+        # for match in single_row_events:
+        #     odds_event = match.find_elements_by_class_name('bet-outcome-list cols-3')
+        #     odds_events.append(odds_event)
                 
-#                 team1 = match.find_elements_by_class_name("bet-team-name bet-team1-name")
-#                 team2 = match.find_elements_by_class_name("bet-team-name bet-team2-name")
-#                 print(team1.text)
-#                 print(team2.text)
-                                                      
+        #     team1 = match.find_elements_by_class_name("bet-team-name bet-team1-name")
+        #     team2 = match.find_elements_by_class_name("bet-team-name bet-team2-name")
+        #     print(team1.text)
+        #     print(team2.text)                                              
